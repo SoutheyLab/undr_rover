@@ -1,39 +1,37 @@
---------------------------------------------------------------------------------
-UNDR ROVER - Unmapped primer directed read overlap variant caller
---------------------------------------------------------------------------------
+# UNDR ROVER - Unmapped primer directed read overlap variant caller
 
 Version: 1.0.0
 
-Authors: Bernard J Pope (2,3), Tú Nguyen-Dumont (1), Fleur Hammet (1), 
-         Daniel J Park (1) and Roger Li (2)
+## Authors:
 
-         (1) Genetic Epidemiology Laboratory, Department of Pathology,
-             The University of Melbourne.
-         (2) Victorian Life Sciences Computation Initiative (VLSCI).
-         (3) Department of Computing and Information Systems,
-             The University of Melbourne.
+ * Bernard J Pope (2,3)
+ * Tú Nguyen-Dumont (1)
+ * Daniel J Park (1)
+ * Roger Li (2)
+
+1. Genetic Epidemiology Laboratory, Department of Pathology, The University of Melbourne.
+2. Victorian Life Sciences Computation Initiative (VLSCI).
+3. Department of Computing and Information Systems, The University of Melbourne.
          
-Web:     https://github.com/rli99/undr_rover
+[Web](https://github.com/bjpop/undr_rover)
 
-License: <License>
+## License
 
-Citation:
+[The BSD 3-Clause License](http://opensource.org/licenses/BSD-3-Clause)
 
-    Please cite Undr Rover as follows:
 
-    <Citation>
+## Requirements
 
-Requirements: Python 2.7, and the PyVCF, Pyfaidx and Biopython libraries
-(https://pypi.python.org/pypi/biopython)
-(https://pypi.python.org/pypi/pyfaidx)
-(https://pypi.python.org/pypi/PyVCF)
+Python 2.7, and the [PyVCF](https://pypi.python.org/pypi/PyVCF), [Pyfaidx](https://pypi.python.org/pypi/pyfaidx)
+and [Biopython](https://pypi.python.org/pypi/biopython) libraries.
 
 The above requirements can be installed by running:
-    pip install -r REQUIREMENTS.txt
 
---------------------------------------------------------------------------------
-General Description
---------------------------------------------------------------------------------
+```
+    pip install -r REQUIREMENTS.txt
+```
+
+## General Description
 
 Undr Rover enables the user to call variants from decompressed FASTQ files 
 directly without having to go through a mapping step. 
@@ -57,10 +55,9 @@ read-pairs a variant must be observed to be considered a 'PASS'. Coverage is
 also reported for each block to allow for regions which require additional 
 screening to be easily identified.
 
---------------------------------------------------------------------------------
-Command Line Usage
---------------------------------------------------------------------------------
+## Command Line Usage
 
+```
 usage: undr_rover [-h] [--version] --primer_coords COORDS --primer_sequences SEQ
                   [--primer_prefix_size N] [--kmer_length N] [--kmer_threshold] 
                   [--primer_bases N] [--proportionthresh N] [--absthresh N] 
@@ -112,8 +109,11 @@ optional arguments:
     --coverdir COVERDIR         Directory to write coverage files, defaults to
                                 current working directory.
 
-Explanation of the arguments
+```
+
+### Explanation of the arguments
     
+```
     -h
 
         Print a help message and exit.
@@ -288,24 +288,25 @@ Explanation of the arguments
         One or more pairs of FASTQ files containing reads for which variant
         calling will be attempted. FASTQ.gz files will need to decompressed
         prior to use with Undr Rover.
+```
 
---------------------------------------------------------------------------------
-Example usage (should all be on one line)
---------------------------------------------------------------------------------
+## Example usage (should all be on one line)
 
+```
 undr_rover.py   --primer_coords roverfile.txt --primer_sequences primers.txt 
                 --id_info dbsnp.vcf.gz --log log_file --fast
                 --reference fasta/hg19bis.fa --out variant_calls.vcf 
                 --coverdir coverage_files sample1*.fastq sample2*.fastq
+```
 
-This assumes that there are two FASTQ files each for sample1* and sample2*, 
+This assumes that there are two FASTQ files each for `sample1*` and `sample2*`, 
 which contain the first and second reads respectively for each read-pair. 
 Roverfile.txt and primers.txt are both TSV format files containing data as 
-described earlier. The --fast flag is also set to decrease the run time
+described earlier. The `--fast` flag is also set to decrease the run time
 of Undr Rover. 
 
-The variants called will be written to the file variant_calls.vcf. Coverage 
+The variants called will be written to the file `variant_calls.vcf`. Coverage 
 files containing the number of read-pairs which mapped to each region will be 
-output in coverage_files/sample1.coverage and coverage_files/sample2.coverage.
+output in `coverage_files/sample1.coverage` and `coverage_files/sample2.coverage`.
 A log file describing the actions taken by the program will be stored in 
-log_file.
+`log_file`.
