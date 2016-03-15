@@ -15,10 +15,11 @@ setup(
     license='LICENSE.txt',
     description=(
         'UNDR ROVER: Unmapped primer directed read overlap variant caller.'),
-    long_description=open('README.txt').read(),
+    long_description=open('README.md').read(),
     install_requires=[
-        "PyVCF",
-        "biopython",
-        "pyfaidx"
+        "PyVCF==0.6.7",
+        "biopython==1.66",
+        "pyfaidx==0.4.7.1",
+        "pysam==0.9.0"
     ],
 )
