@@ -9,6 +9,8 @@ from itertools import takewhile
 from operator import itemgetter
 from pyfaidx import Fasta
 from version import undr_rover_version
+from collections import defaultdict
+from genotype_gtest import Haploid, Diploid 
 import csv
 import datetime
 import gzip
@@ -27,6 +29,8 @@ DEFAULT_PRIMER_PREFIX_SIZE = 20
 DEFAULT_PROPORTION_THRESHOLD = 0.05
 DEFAULT_SNV_THRESHOLD = 1
 DEFAULT_FAST_SETTING = False
+DEFAULT_GENOTYPE_SETTING = False
+DEFAULT_PLOIDY = 2
 OUTPUT_HEADER = '\t'.join(["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", \
     "FILTER", "INFO"])
 
@@ -46,19 +50,19 @@ def parse_args():
     	help='Size of primer key for blocks in dictionary.')
     parser.add_argument('--kmer_length', type=int, \
         default=DEFAULT_KMER_LENGTH, \
-        help='Length of k-mer to check after the primer sequence.' \
+        help='Length of k-mer to check after the primer sequence. ' \
         'Defaults to {}.'.format(DEFAULT_KMER_LENGTH))
     parser.add_argument('--kmer_threshold', type=int, \
         help='Number of single nucleotide variants deemed acceptable in kmer.')
     parser.add_argument('--primer_bases', type=int, \
         default=DEFAULT_PRIMER_BASES, \
         help='Number of bases from primer region to use in gapped alignment.' \
-        'Helps with variant calling near the edges of a block.' \
+        'Helps with variant calling near the edges of a block. ' \
         'Defaults to {}.'.format(DEFAULT_PRIMER_BASES))
     parser.add_argument('--proportionthresh', metavar='N', type=float, \
         default=DEFAULT_PROPORTION_THRESHOLD, \
         help='Keep variants which appear in this proportion of the read \
-        pairs. For a given target region, and bin otherwise.' \
+        pairs. For a given target region, and bin otherwise. ' \
         'Defaults to {}.'.format(DEFAULT_PROPORTION_THRESHOLD))
     parser.add_argument('--absthresh', metavar='N', type=int, \
         default=DEFAULT_ABSOLUTE_THRESHOLD, \
@@ -69,11 +73,11 @@ def parse_args():
         help='Minimum base quality score (phred).')
     parser.add_argument('--overlap', type=float, \
         default=DEFAULT_MINIMUM_READ_OVERLAP_BLOCK, \
-        help='Minimum proportion of block which must be overlapped by a read.' \
+        help='Minimum proportion of block which must be overlapped by a read. ' \
         'Defaults to {}.'.format(DEFAULT_MINIMUM_READ_OVERLAP_BLOCK))
     parser.add_argument('--max_variants', metavar='N', type=int, \
         default=DEFAULT_MAX_VARIANTS, \
-        help='Ignore reads with greater than this many variants observed.' \
+        help='Ignore reads with greater than this many variants observed. ' \
         'Defaults to {}.'.format(DEFAULT_MAX_VARIANTS))
     parser.add_argument('--reference', metavar='FILE', type=str, \
         required=True, help='Reference sequences in Fasta format.')
@@ -95,6 +99,12 @@ def parse_args():
         a gapped alignment.')
     parser.add_argument('fastqs', nargs='+', type=str, \
         help='Fastq files containing reads.')
+    parser.add_argument('--genotype', action='store_true', \
+    	default=DEFAULT_GENOTYPE_SETTING, \
+        help='Compute genotypes for SNVs. Defaults to {}.'.format(DEFAULT_GENOTYPE_SETTING))
+    parser.add_argument('--ploidy', type=int, choices=[1, 2],\
+    	default=DEFAULT_PLOIDY, \
+        help='Ploidy for genotyping 1 = haploid, 2 = diploid. Defaults to {}.'.format(DEFAULT_PLOIDY))
     return parser.parse_args()
 
 class Base(object):
@@ -424,6 +434,8 @@ def process_blocks(args, blocks, id_info, vcf_file):
     coverage_info = []
     for block_info in sorted(blocks, key=itemgetter(0, int(1))):
         block_vars = {}
+        # Indexed by position of the snp
+        snvs_pileups = defaultdict(list)
         num_pairs, total_pairs, kmer_fail = 0, 0, 0
         chrsm, start, end, reads, insert_seq = block_info[:5]
         start = int(start)
@@ -480,6 +492,7 @@ def process_blocks(args, blocks, id_info, vcf_file):
                 if isinstance(var, SNV):
                     if var.pos >= start and var.pos <= end:
                         block_vars[var] = block_vars.get(var, 0) + 1
+                        snvs_pileups[var.pos].append(var)
                 elif isinstance(var, Insertion) or isinstance(var, Deletion):
                     if var.pos >= start - max(len(var.ref()), len(var.alt())) \
                     and var.pos <= end + max(len(var.ref()), len(var.alt())):
@@ -494,6 +507,28 @@ def process_blocks(args, blocks, id_info, vcf_file):
         logging.info("Number of variants found in block: {}".\
             format(len(block_vars)))
 
+        genotypes = {}
+        if args.genotype:
+            # Mapping from chrom position to computed likely genotype
+
+            # Compute genotypes for all SNV positions
+            for position in sorted(snvs_pileups):
+                pileup = snvs_pileups[position]
+                if len(pileup) > 0:
+                    ref_base = pileup[0].ref()
+                    # This is approximate because we assume all non-snv read pairs
+                    # were the same as the reference. It will be inaccurate if
+                    # the other reads contain INDELs
+                    num_ref_bases = num_pairs - len(pileup)
+                    pileup_bases = ref_base * num_ref_bases 
+                    for pileup_var in pileup:
+                        pileup_bases += pileup_var.alt()
+                    if args.ploidy == 1:
+                        genotyper = Haploid(pileup_bases.upper())
+                    else: 
+                        genotyper = Diploid(pileup_bases.upper())
+                    genotypes[position] = genotyper.snv() 
+
         for var in block_vars:
             num_vars = block_vars[var]
             proportion = float(num_vars) / num_pairs
@@ -504,7 +539,7 @@ def process_blocks(args, blocks, id_info, vcf_file):
                 var.filter_reason = ''.join([nts(var.filter_reason), ";at"])
             if proportion < args.proportionthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";pt"])
-            write_variant(vcf_file, var, id_info, args)
+            write_variant(vcf_file, var, id_info, args, genotypes)
 
         coverage_info.append((chrsm, start, end, num_pairs))
 
@@ -514,7 +549,30 @@ def process_blocks(args, blocks, id_info, vcf_file):
     with open(coverage_filename, 'w') as coverage_file:
         write_coverage_data(coverage_file, coverage_info)
 
-def write_variant(vcf_file, variant, id_info, args):
+def format_genotype(variant, genotypes, ploidy):
+    result = []
+    pos = variant.position()
+    if pos in genotypes:
+        gt, prob = genotypes[pos]
+        reference_base = variant.ref()
+        if ploidy == 2:
+            gt_1, gt_2 = gt
+            if gt_1 == reference_base:
+                gt_str = gt_1 + gt_2
+            elif gt_2 == reference_base:
+                gt_str = gt_2 + gt_1
+            else:
+                gt_str = gt
+        else:
+            gt_str = gt
+        result = ["GT=" + gt_str]
+        if prob is not None:
+            prob_str = "GTP={:.3f}".format(prob)
+            result.append(prob_str)
+    return result
+
+
+def write_variant(vcf_file, variant, id_info, args, genotypes):
     """ Writes variant to vcf_file, while also finding the relevant rs number
     from dbsnp if applicable."""
     # If the variant is deemed a "PASS", find the relevant rs number from dbsnp.
@@ -525,6 +583,9 @@ def write_variant(vcf_file, variant, id_info, args):
             if record.POS == variant.position() and record.REF == \
             variant.ref() and (variant.alt() in record.ALT):
                 ref = str(record.ID)
+    genotype_info = format_genotype(variant, genotypes, args.ploidy)
+    variant.info.extend(genotype_info)
+
     vcf_file.write('\t'.join([variant.chrsm, str(variant.position()), \
 ref, variant.ref(), variant.alt(), str(variant.qual), variant.fil(), \
 ';'.join(variant.info)]) + '\n')
@@ -552,6 +613,10 @@ read pairs with variant\">\n")
 read pairs at POS\">\n")
     vcf_file.write("##INFO=<ID=PCT,Number=1,Type=Float,Description=\
 \"Percentage of read pairs at POS with variant\">\n")
+    vcf_file.write("##INFO=<ID=GT,Number=1,Type=String,Description=\
+\"Most likely genotype of the variant\">\n")
+    vcf_file.write("##INFO=<ID=GTP,Number=1,Type=Float,Description=\
+\"Probability of the genotype\">\n")
     if args.qualthresh:
         vcf_file.write("##FILTER=<ID=qlt,Description=\"Variant has phred \
 quality score below {}\">\n".format(args.qualthresh))
