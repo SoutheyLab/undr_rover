@@ -261,12 +261,14 @@ def read_snvs(args, chrsm, qual, pos, insert_seq, bases, direction):
                 count += 1
             if check <= min_distance:
                 if not args.kmer_threshold:
+                    # Yes, these zeros are significant.
                     return (0, 0)
                 # If SNVs within a certain distance have been detected, and
                 # we're past the k-mer region, return 0 as well as the count
                 # of SNVs in the k-mer region.
                 if pos >= kmer_stop and direction == 1 or pos <= kmer_stop and \
                 direction == -1:
+                    # Yes, these zeros are significant.
                     return (0, count)
             result.append(SNV(chrsm, pos, [insert_seq[i], bases[i]], '.'))
             if args.qualthresh and ascii_to_phred(qual[i]) < args.qualthresh:
@@ -389,7 +391,7 @@ def complete_blocks(args, blocks, fastq_pair):
         if len(blocks[block]) > 2:
             blocks[block][3].clear()
     sample = os.path.basename(fastq_pair[0]).split('_')
-    if len(sample) > 0:
+    if len(sample) > 1:
         sample = '_'.join(sample[:3])
         logging.info("Processing sample {}".format(sample))
     else:
@@ -426,13 +428,15 @@ def complete_blocks(args, blocks, fastq_pair):
                             blocks[forward_key][3][read['name']][1] = read
                             blocks[forward_key][3][read['name']][3] = len(rseq)
     # For the next stage, we only need the actual blocks.
-    return [b[:5] for b in blocks.values() if len(b) > 2]
+    result = [b[:5] for b in blocks.values() if len(b) > 2]
+    return result 
 
 def process_blocks(args, blocks, id_info, vcf_file):
     """ Variant calling stage. Process blocks one at a time and call variants
     for each block."""
     coverage_info = []
     for block_info in sorted(blocks, key=itemgetter(0, int(1))):
+        sample = None
         block_vars = {}
         # Indexed by position of the snp
         snvs_pileups = defaultdict(list)
@@ -543,11 +547,12 @@ def process_blocks(args, blocks, id_info, vcf_file):
 
         coverage_info.append((chrsm, start, end, num_pairs))
 
-    coverage_filename = sample + '.coverage'
-    if args.coverdir is not None:
-        coverage_filename = os.path.join(args.coverdir, coverage_filename)
-    with open(coverage_filename, 'w') as coverage_file:
-        write_coverage_data(coverage_file, coverage_info)
+    if sample is not None:
+        coverage_filename = sample + '.coverage'
+        if args.coverdir is not None:
+            coverage_filename = os.path.join(args.coverdir, coverage_filename)
+        with open(coverage_filename, 'w') as coverage_file:
+            write_coverage_data(coverage_file, coverage_info)
 
 def format_genotype(variant, genotypes, ploidy):
     result = []
