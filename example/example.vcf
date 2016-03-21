@@ -1,0 +1,14 @@
+##fileformat=VCFv4.2
+##fileDate=20160321
+##source=UNDR ROVER
+##INFO=<ID=Sample,Number=1,Type=String,Description="Sample Name">
+##INFO=<ID=NV,Number=1,Type=Float,Description="Number of read pairs with variant">
+##INFO=<ID=NP,Number=1,Type=Float,Description="Number of read pairs at POS">
+##INFO=<ID=PCT,Number=1,Type=Float,Description="Percentage of read pairs at POS with variant">
+##INFO=<ID=GT,Number=1,Type=String,Description="Most likely genotype of the variant">
+##INFO=<ID=GTP,Number=1,Type=Float,Description="Probability of the genotype">
+##FILTER=<ID=at,Description="Variant does not appear in at least 2 read pairs">
+##FILTER=<ID=pt,Description="Variant does not appear in at least 5.0% of read pairs for the given region">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO
+chr7	152357834	.	T	G	.	at;pt	Sample=example_R1.fastq;NV=1;NP=155;PCT=0.65%;GT=TT;GTP=0.659
+chr7	152357819	.	T	C	.	PASS	Sample=example_R1.fastq;NV=76;NP=155;PCT=49.03%;GT=TC;GTP=0.957
