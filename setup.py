@@ -4,7 +4,7 @@ from distutils.core import setup
 
 setup(
     name='undr_rover',
-    version='1.1.0',
+    version='2.0.0',
     author='Roger Li',
     author_email='r.li3@student.unimelb.edu.au',
     packages=['undr_rover'],
