@@ -1,7 +1,5 @@
 import math
 from collections import defaultdict
-from memoized import memoized
-import mpmath
 from scipy.stats import chi2
 
 DEFAULT_READ_ERROR = 1.0/500.0
