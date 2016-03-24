@@ -32,30 +32,40 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h2>
-<a id="a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" class="anchor" href="#a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" aria-hidden="true"><span class="octicon octicon-link"></span></a>A simple, fast method of calling variants directly from FASTQs without mapping</h2>
-
-<hr>
+<a id="a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" class="anchor" href="#a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A simple, fast method of calling variants directly from FASTQs without mapping</h2>
 
 <h3>
-<a id="how-to-use-undr-rover-to-call-variants" class="anchor" href="#how-to-use-undr-rover-to-call-variants" aria-hidden="true"><span class="octicon octicon-link"></span></a>How to use Undr Rover to call variants</h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>We recommend using virtualenv for installing UNDR ROVER in a sandboxed environment instead of a global install. The instructions below assume you are working in a directory where you can install the software.</p>
+
+<p>UNDR ROVER depends on SciPy, which can be challenging to install using pip. We recommend using your operating system package manner to install SciPy before installing UNDR ROVER. The <code>--system-site-packages</code> option to virtualenv tells pip to use the site-installed version of SciPy.</p>
+
+<pre><code>virtualenv --system-site-packages undr_rover_dev
+source undr_rover_dev/bin/activate
+pip install git+https://github.com/bjpop/undr_rover
+</code></pre>
+
+<h3>
+<a id="how-to-use-undr-rover-to-call-variants" class="anchor" href="#how-to-use-undr-rover-to-call-variants" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use Undr Rover to call variants</h3>
 
 <h4>
-<a id="1-download-the-undr-rover-software" class="anchor" href="#1-download-the-undr-rover-software" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. Download the Undr Rover software.</h4>
+<a id="1-download-the-undr-rover-software" class="anchor" href="#1-download-the-undr-rover-software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Download the Undr Rover software.</h4>
 
 <p>Download Undr Rover from <a href="https://github.com/rli99/undr_rover/archive/master.zip">GitHub</a>.</p>
 
 <h4>
-<a id="2-ensure-the-relevant-dependencies-are-installed" class="anchor" href="#2-ensure-the-relevant-dependencies-are-installed" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. Ensure the relevant dependencies are installed.</h4>
+<a id="2-ensure-the-relevant-dependencies-are-installed" class="anchor" href="#2-ensure-the-relevant-dependencies-are-installed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Ensure the relevant dependencies are installed.</h4>
 
 <p>Undr Rover requires the Biopython, PyVCF and Pyfaidx libraries. They can be installed with the following line: <code>pip install -r REQUIREMENTS.txt</code></p>
 
 <h4>
-<a id="3-acquire-the-genome-reference-file-in-fasta-format" class="anchor" href="#3-acquire-the-genome-reference-file-in-fasta-format" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. Acquire the genome reference file in FASTA format.</h4>
+<a id="3-acquire-the-genome-reference-file-in-fasta-format" class="anchor" href="#3-acquire-the-genome-reference-file-in-fasta-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Acquire the genome reference file in FASTA format.</h4>
 
 <p>As no mapping is undertaken by Undr Rover, this file is required to determine the canonical insert sequence. Note that you will also need the .fai index file. </p>
 
 <h4>
-<a id="4-create-a-file-specifying-target-regions" class="anchor" href="#4-create-a-file-specifying-target-regions" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. Create a file specifying target regions.</h4>
+<a id="4-create-a-file-specifying-target-regions" class="anchor" href="#4-create-a-file-specifying-target-regions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. Create a file specifying target regions.</h4>
 
 <p>The file should be tab-separated, and contain information in 5 columns. The first column will contain chromosome numbers, while the second and third columns specify the starting and ending coordinates of the target regions. The fourth and fifth columns will name the forward and reverse primers of each target region. </p>
 
@@ -76,7 +86,7 @@ chr11   31815340    31815437    PAX6_4_F3   PAX6_4_R3
 <p>Specify the name of this file using the --primer_coords command line parameter.</p>
 
 <h4>
-<a id="5-create-a-file-specifying-the-primer-sequences" class="anchor" href="#5-create-a-file-specifying-the-primer-sequences" aria-hidden="true"><span class="octicon octicon-link"></span></a>5. Create a file specifying the primer sequences.</h4>
+<a id="5-create-a-file-specifying-the-primer-sequences" class="anchor" href="#5-create-a-file-specifying-the-primer-sequences" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5. Create a file specifying the primer sequences.</h4>
 
 <p>Undr Rover requires the primer sequences for each primer in order to correctly match reads to target regions. The file should be tab-separated and simply contain 2 columns, with the first containing the primer name and the second containing the primer sequence. </p>
 
@@ -97,7 +107,7 @@ PAX6_2_R3   GGCATCTTTAATGATCAGACTTGT
 <p>Specify the name of this file using the --primer_sequences command line parameter.</p>
 
 <h4>
-<a id="6-run-undr-rover-from-the-command-line" class="anchor" href="#6-run-undr-rover-from-the-command-line" aria-hidden="true"><span class="octicon octicon-link"></span></a>6. Run Undr Rover from the command line.</h4>
+<a id="6-run-undr-rover-from-the-command-line" class="anchor" href="#6-run-undr-rover-from-the-command-line" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>6. Run Undr Rover from the command line.</h4>
 
 <p>An example of a command line used to run Undr Rover would be as follows:</p>
 
@@ -114,7 +124,7 @@ PAX6_2_R3   GGCATCTTTAATGATCAGACTTGT
 <p>Sample1 and sample2 must each have 2 fastq files, corresponding to the first and second reads in a read-pair. Please be aware that only FASTQs are accepted. If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
 
 <h4>
-<a id="7-a-log-file-is-produced-by-undr-rover" class="anchor" href="#7-a-log-file-is-produced-by-undr-rover" aria-hidden="true"><span class="octicon octicon-link"></span></a>7. A log file is produced by Undr Rover.</h4>
+<a id="7-a-log-file-is-produced-by-undr-rover" class="anchor" href="#7-a-log-file-is-produced-by-undr-rover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>7. A log file is produced by Undr Rover.</h4>
 
 <p>A log file with the specified name will be created by Undr Rover. Below is an example of the start of a log file created by Undr Rover. </p>
 
@@ -132,7 +142,7 @@ Mon, 15 Dec 2014 17:04:22 Number of variants found in block: 0
 </code></pre>
 
 <h4>
-<a id="8-example-of-a-complete-command-line-for-undr-rover" class="anchor" href="#8-example-of-a-complete-command-line-for-undr-rover" aria-hidden="true"><span class="octicon octicon-link"></span></a>8. Example of a complete command line for Undr Rover.</h4>
+<a id="8-example-of-a-complete-command-line-for-undr-rover" class="anchor" href="#8-example-of-a-complete-command-line-for-undr-rover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>8. Example of a complete command line for Undr Rover.</h4>
 
 <pre><code>undr_rover.py   
     --primer_coords roverfile.txt 
