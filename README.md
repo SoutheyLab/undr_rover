@@ -15,8 +15,8 @@ Version: 2.0.0
 2. Victorian Life Sciences Computation Initiative (VLSCI).
 3. Department of Computing and Information Systems, The University of Melbourne.
          
-[Web](https://github.com/bjpop/undr_rover)
-[Documentation](http://bjpop.github.io/undr_rover/)
+* [Web page](https://github.com/bjpop/undr_rover)
+* [User Documentation](http://bjpop.github.io/undr_rover/)
 
 
 ## License
