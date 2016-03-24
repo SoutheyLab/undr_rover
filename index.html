@@ -133,10 +133,15 @@ PAX6_2_R3   GGCATCTTTAATGATCAGACTTGT
 
 <p>The command is:</p>
 
-<pre><code>undr_rover --primer_coords example_coords.txt --primer_sequences example_primers.txt --reference hg19bis.fa --out example.vcf --genotype example_R1.fastq example_R2.fastq
+<pre><code>undr_rover --primer_coords example_coords.txt \
+           --primer_sequences example_primers.txt \
+           --reference reference.fasta \
+           --out example.vcf \
+           --genotype \
+           example_R1.fastq example_R2.fastq
 </code></pre>
 
-<p>Sample1 and sample2 must each have 2 fastq files, corresponding to the first and second reads in a read-pair. Please be aware that only FASTQs are accepted. If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
+<p>If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
 
 <h4>
 <a id="7-a-log-file-is-produced-by-undr-rover" class="anchor" href="#7-a-log-file-is-produced-by-undr-rover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>7. A log file is produced by Undr Rover.</h4>
