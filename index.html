@@ -81,7 +81,9 @@ undr_rover 2.0.0
 <p>As no mapping is undertaken by Undr Rover, this file is required to determine the canonical insert sequence. Note that you will also need the .fai index file. </p>
 
 <h4>
-<a id="4-create-a-file-specifying-target-regions" class="anchor" href="#4-create-a-file-specifying-target-regions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>4. Create a file specifying target regions.</h4>
+<a id="create-a-file-specifying-target-regions" class="anchor" href="#create-a-file-specifying-target-regions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a file specifying target regions.</h4>
+
+<p>The example directory contains one called <code>example_coords.txt</code>.</p>
 
 <p>The file should be tab-separated, and contain information in 5 columns. The first column will contain chromosome numbers, while the second and third columns specify the starting and ending coordinates of the target regions. The fourth and fifth columns will name the forward and reverse primers of each target region. </p>
 
@@ -99,10 +101,12 @@ chr11   31815242    31815339    PAX6_4_F2   PAX6_4_R2
 chr11   31815340    31815437    PAX6_4_F3   PAX6_4_R3
 </code></pre>
 
-<p>Specify the name of this file using the --primer_coords command line parameter.</p>
+<p>Specify the name of this file using the <code>--primer_coords</code> command line parameter.</p>
 
 <h4>
-<a id="5-create-a-file-specifying-the-primer-sequences" class="anchor" href="#5-create-a-file-specifying-the-primer-sequences" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>5. Create a file specifying the primer sequences.</h4>
+<a id="create-a-file-specifying-the-primer-sequences" class="anchor" href="#create-a-file-specifying-the-primer-sequences" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Create a file specifying the primer sequences.</h4>
+
+<p>The example directory contains one called <code>example_primers.txt</code></p>
 
 <p>Undr Rover requires the primer sequences for each primer in order to correctly match reads to target regions. The file should be tab-separated and simply contain 2 columns, with the first containing the primer name and the second containing the primer sequence. </p>
 
@@ -120,21 +124,16 @@ PAX6_2_F3   AGTATGAGGAGGTCTGGCTGG
 PAX6_2_R3   GGCATCTTTAATGATCAGACTTGT
 </code></pre>
 
-<p>Specify the name of this file using the --primer_sequences command line parameter.</p>
+<p>Specify the name of this file using the <code>--primer_sequences</code> command line parameter.</p>
 
 <h4>
-<a id="6-run-undr-rover-from-the-command-line" class="anchor" href="#6-run-undr-rover-from-the-command-line" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>6. Run Undr Rover from the command line.</h4>
+<a id="run-undr-rover-from-the-command-line" class="anchor" href="#run-undr-rover-from-the-command-line" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Run UNDR ROVER from the command line</h4>
 
-<p>An example of a command line used to run Undr Rover would be as follows:</p>
+<p>The example directory contains a file called <code>command.sh</code> which contains an illustrative command to test out the program.</p>
 
-<pre><code>undr_rover.py
-    --primer_coords &lt;file containing target regions&gt; 
-    --primer_sequences &lt;file containing primer sequences&gt;
-    --log log_file &lt;log_file_name.log&gt;
-    --reference &lt;reference.fa&gt;
-    --out &lt;output_file_name.vcf&gt;
-    --coverdir &lt;directory to place coverage files&gt;
-    sample1*.fastq sample2*.fastq
+<p>The command is:</p>
+
+<pre><code>undr_rover --primer_coords example_coords.txt --primer_sequences example_primers.txt --reference hg19bis.fa --out example.vcf --genotype example_R1.fastq example_R2.fastq
 </code></pre>
 
 <p>Sample1 and sample2 must each have 2 fastq files, corresponding to the first and second reads in a read-pair. Please be aware that only FASTQs are accepted. If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
