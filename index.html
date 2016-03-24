@@ -141,42 +141,25 @@ PAX6_2_R3   GGCATCTTTAATGATCAGACTTGT
            example_R1.fastq example_R2.fastq
 </code></pre>
 
+<p>The output of the above command will be a VCF file called <code>example.vcf</code>, its contents will look like so:</p>
+
+<pre><code>##fileformat=VCFv4.2
+##fileDate=20160324
+##source=UNDR ROVER
+##INFO=&lt;ID=Sample,Number=1,Type=String,Description="Sample Name"&gt;
+##INFO=&lt;ID=NV,Number=1,Type=Float,Description="Number of read pairs with variant"&gt;
+##INFO=&lt;ID=NP,Number=1,Type=Float,Description="Number of read pairs at POS"&gt;
+##INFO=&lt;ID=PCT,Number=1,Type=Float,Description="Percentage of read pairs at POS with variant"&gt;
+##INFO=&lt;ID=GT,Number=1,Type=String,Description="Most likely genotype of the variant"&gt;
+##INFO=&lt;ID=GTP,Number=1,Type=Float,Description="Probability of the genotype"&gt;
+##FILTER=&lt;ID=at,Description="Variant does not appear in at least 2 read pairs"&gt;
+##FILTER=&lt;ID=pt,Description="Variant does not appear in at least 5.0% of read pairs for the given region"&gt;
+#CHROM  POS ID  REF ALT QUAL    FILTER  INFO
+chr7    152357834   .   T   G   .   at;pt   Sample=example_R1.fastq;NV=1;NP=155;PCT=0.65%;GT=TT;GTP=0.659
+chr7    152357819   .   T   C   .   PASS    Sample=example_R1.fastq;NV=76;NP=155;PCT=49.03%;GT=TC;GTP=0.957
+</code></pre>
+
 <p>If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
-
-<h4>
-<a id="7-a-log-file-is-produced-by-undr-rover" class="anchor" href="#7-a-log-file-is-produced-by-undr-rover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>7. A log file is produced by Undr Rover.</h4>
-
-<p>A log file with the specified name will be created by Undr Rover. Below is an example of the start of a log file created by Undr Rover. </p>
-
-<pre><code>Mon, 15 Dec 2014 17:04:20 Program started.
-Mon, 15 Dec 2014 17:04:20 Command line: undr_rover.py --primer_bases 15 --primer_coords k-plex_roverfile2.txt --primer_sequences k-plex_primers.txt --log log_file --id_info dbsnp.vcf.gz --reference fasta/hg19bis.fa --out variant_calls.vcf --coverdir coverage_files test_fastqs/SD0390_S70_L001_R1_001.fastq test_fastqs/SD0390_S70_L001_R2_001.fastq
-Mon, 15 Dec 2014 17:04:21 Processing sample SD0390_S70_L001
-Mon, 15 Dec 2014 17:04:22 Processing block chr: chr10, start: 89624214, end: 89624313
-Mon, 15 Dec 2014 17:04:22 Number of read pairs in block: 0
-Mon, 15 Dec 2014 17:04:22 Number of acceptable read pairs in block: 0
-Mon, 15 Dec 2014 17:04:22 Number of variants found in block: 0
-Mon, 15 Dec 2014 17:04:22 Processing block chr: chr10, start: 89653675, end: 89653774
-Mon, 15 Dec 2014 17:04:22 Number of read pairs in block: 0
-Mon, 15 Dec 2014 17:04:22 Number of acceptable read pairs in block: 0
-Mon, 15 Dec 2014 17:04:22 Number of variants found in block: 0
-</code></pre>
-
-<h4>
-<a id="8-example-of-a-complete-command-line-for-undr-rover" class="anchor" href="#8-example-of-a-complete-command-line-for-undr-rover" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>8. Example of a complete command line for Undr Rover.</h4>
-
-<pre><code>undr_rover.py   
-    --primer_coords roverfile.txt 
-    --primer_sequences primers.txt 
-    --log log_file 
-    --reference fasta/hg19bis.fa 
-    --out variant_calls.vcf 
-    --coverdir coverage_files 
-    sample1*.fastq sample2*.fastq
-</code></pre>
-
-<p>Note that there are various optional command line arguments which can be used to alter the behaviour of Undr Rover. Further details on these can be found in the README on Undr Rover's <a href="https://github.com/rli99/undr_rover">GitHub page</a>.</p>
-
-<p>This command line assumes that there are two FASTQ files each for sample1* and sample2*, which contain the first and second reads respectively for each read-pair. Roverfile.txt and primers.txt are both TSV format files containing data as described earlier. </p>
 
 <p>The variants called will be written to the file variant_calls.vcf. This file will report called variants in accordance with the VCF v4.2 specification outlined <a href="http://samtools.github.io/hts-specs/VCFv4.2.pdf">here</a>. Coverage files containing the number of read-pairs which mapped to each region will be output in coverage_files/sample1.coverage and coverage_files/sample2.coverage. A log file describing the actions taken by the program will be stored in log_file.</p>
       </section>
