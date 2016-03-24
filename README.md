@@ -9,7 +9,7 @@ Version: 2.0.0
  * Daniel J Park (1)
  * Roger Li (2)
  * Edmund Lau (2)
- * Peter Georgeson
+ * Peter Georgeson (2)
 
 1. Genetic Epidemiology Laboratory, Department of Pathology, The University of Melbourne.
 2. Victorian Life Sciences Computation Initiative (VLSCI).
