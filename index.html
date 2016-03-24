@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Undr Rover : Unmapped primer directed ROVER">
+    <meta name="description" content="UNDR ROVER : Unmapped primer directed ROVER">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Undr Rover</title>
+    <title>UNDR ROVER</title>
   </head>
 
   <body>
@@ -18,7 +18,7 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/bjpop/undr_rover">View on GitHub</a>
 
-          <h1 id="project_title">Undr Rover</h1>
+          <h1 id="project_title">UNDR ROVER</h1>
           <h2 id="project_tagline">Unmapped primer directed ROVER</h2>
 
             <section id="downloads">
@@ -46,21 +46,37 @@ source undr_rover_dev/bin/activate
 pip install git+https://github.com/bjpop/undr_rover
 </code></pre>
 
+<p>You can test that the installation worked correctly by asking undr_rover for its version number:</p>
+
+<pre><code>undr_rover --version
+undr_rover 2.0.0
+</code></pre>
+
 <h3>
-<a id="how-to-use-undr-rover-to-call-variants" class="anchor" href="#how-to-use-undr-rover-to-call-variants" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>How to use Undr Rover to call variants</h3>
+<a id="undr-rover-needs-a-human-genome-reference-in-fasta-format" class="anchor" href="#undr-rover-needs-a-human-genome-reference-in-fasta-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UNDR ROVER needs a human genome reference in FASTA format.</h3>
+
+<p>UNDR ROVER requires a human reference genome in a single FASTA format. Your choice of which version to use will depend on other downstream analyses that you might do. HG19 works well if you don't know which one to choose.</p>
+
+<p>You will need to index the reference genome to produce a <code>.fai</code> file. You can do this with samtools:</p>
+
+<pre><code>samtools faidx reference.fasta
+</code></pre>
+
+<h2>
+<a id="worked-example" class="anchor" href="#worked-example" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Worked example</h2>
+
+<p>The source code of UNDR ROVER comes with a small example dataset for testing purposes.</p>
 
 <h4>
-<a id="1-download-the-undr-rover-software" class="anchor" href="#1-download-the-undr-rover-software" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. Download the Undr Rover software.</h4>
+<a id="obtain-a-copy-of-the-undr-rover-source-code" class="anchor" href="#obtain-a-copy-of-the-undr-rover-source-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Obtain a copy of the UNDR ROVER source code:</h4>
 
-<p>Download Undr Rover from <a href="https://github.com/rli99/undr_rover/archive/master.zip">GitHub</a>.</p>
+<pre><code>git clone https://github.com/bjpop/undr_rover
+</code></pre>
 
-<h4>
-<a id="2-ensure-the-relevant-dependencies-are-installed" class="anchor" href="#2-ensure-the-relevant-dependencies-are-installed" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. Ensure the relevant dependencies are installed.</h4>
+<p>The example data set is in the directory <code>undr_rover/example</code> within the source code.</p>
 
-<p>Undr Rover requires the Biopython, PyVCF and Pyfaidx libraries. They can be installed with the following line: <code>pip install -r REQUIREMENTS.txt</code></p>
-
-<h4>
-<a id="3-acquire-the-genome-reference-file-in-fasta-format" class="anchor" href="#3-acquire-the-genome-reference-file-in-fasta-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. Acquire the genome reference file in FASTA format.</h4>
+<pre><code>cd undr_rover/example/
+</code></pre>
 
 <p>As no mapping is undertaken by Undr Rover, this file is required to determine the canonical insert sequence. Note that you will also need the .fai index file. </p>
 
@@ -165,7 +181,7 @@ Mon, 15 Dec 2014 17:04:22 Number of variants found in block: 0
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Undr Rover maintained by <a href="https://github.com/bjpop">bjpop</a></p>
+        <p class="copyright">UNDR ROVER maintained by <a href="https://github.com/bjpop">bjpop</a></p>
         <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
