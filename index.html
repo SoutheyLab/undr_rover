@@ -148,7 +148,9 @@ undr_rover 2.0.0
 
 <p>The example directory contains one called <code>example_coords.txt</code>.</p>
 
-<p>The file should be tab-separated, and contain information in 5 columns. The first column will contain chromosome numbers, while the second and third columns specify the starting and ending coordinates of the target regions. The fourth and fifth columns will name the forward and reverse primers of each target region. </p>
+<p>The file should be tab-separated, and contain information in 5 columns. The first column will contain chromosome numbers, while the second and third columns specify the starting and ending coordinates of the target regions. The fourth and fifth columns will name the forward and reverse primers of each target region.</p>
+
+<p>All coordinates are 1-based.</p>
 
 <p>An example of such a file is shown below:</p>
 
@@ -546,6 +548,14 @@ prior to use with UNDR ROVER.</p>
 <p><strong>Optional</strong>. Defaults to 2. Only relevant if <code>--genotype</code> is also given as command line argument.</p>
 
 <p>If <code>--genotype</code> is given as a command line argument then the underlying ploidy of the sample can be set to either 1 (haploid) or 2 (diploid). UNDR ROVER assumes the same ploidy for all positions when calling genotyping. If you want to perform genotyping on samples with different ploidy (for example on human male sex chromosomes) then you will need to run UNDR ROVER on those reads separately.</p>
+
+<h4>
+<a id="--error" class="anchor" href="#--error" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>--error</code>
+</h4>
+
+<p><strong>Optional</strong>. Defaults to 0.002.</p>
+
+<p>UNDR ROVER assumes a constant per-base error rate for its input reads. This error rate is used in the the optional genotyping of SNVs.</p>
       </section>
     </div>
 
