@@ -69,6 +69,7 @@
 <li>A reference human genome sequence in a single FASTA file</li>
 <li>A file describing the amplicon target coordinates</li>
 <li>A file describing the PCR primers used for the specified coordinates</li>
+<li>Paired-end DNA sequences where the paired reads significantly overlap, such as the result of the <a href="http://hiplex.org/">Hi-Plex targeted sequencing system</a>.</li>
 </ul>
 
 <h3>
@@ -90,7 +91,7 @@ UNDR ROVER immediatly ceases this step and instead does a full gapped alignment
 of the read against the reference insert sequence to detect possible insertions
 and deletions.</p>
 
-<p>Only variants detected in both reads of a read-pair are considered relevant.
+<p>Only variants detected in both reads of a read-pair are considered relevant. This allows UNDR ROVER to filter out many sequencing artifacts and produce highly accurate results. However, it does depend on the underlying sequences to have substantially overlapping paired reads, such as the result of the <a href="http://hiplex.org/">Hi-Plex targeted sequencing system</a>.
 User-defined thresholds determine the minimum number and proportion of
 read-pairs a variant must be observed to be considered a 'PASS'. Coverage is
 also reported for each block to allow for regions which require additional
