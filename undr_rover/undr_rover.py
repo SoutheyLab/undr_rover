@@ -651,9 +651,6 @@ def main():
         for fastq_pair in zip(*[iter(args.fastqs)]*2):
             final_blocks = complete_blocks(args, blocks, fastq_pair)
             process_blocks(args, final_blocks, vcf_reader, vcf_file)
-    # from guppy import hpy
-    # h = hpy()
-    # print h.heap()
 
 if __name__ == '__main__':
     main()
