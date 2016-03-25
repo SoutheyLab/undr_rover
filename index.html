@@ -240,6 +240,8 @@ chr7    152357819   .   T   C   .   PASS    Sample=example_R1.fastq;NV=76;NP=155
 
 <p>The above command produces the following output. A more detailed explanation of the options is provided below.</p>
 
+<p>Many of the command line arguments have default values.</p>
+
 <pre><code>usage: undr_rover [-h] [--version] --primer_coords PRIMER_COORDS
                   --primer_sequences FILE
                   [--primer_prefix_size PRIMER_PREFIX_SIZE]
@@ -305,23 +307,22 @@ optional arguments:
 <h3>
 <a id="explanation-of-command-line-options" class="anchor" href="#explanation-of-command-line-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Explanation of command line options</h3>
 
-<pre><code>    -h
+<ul>
+<li>
+<code>-h</code> Print a help message and exit.</li>
+<li>
+<code>--version</code> Print the version number of rover and exit.</li>
+<li>
+<code>--primer_coords COORDS</code>
+ Required.
+ A list of primers with their expected coordinates. TSV format with the following data:
+ <code>
+ chromosome  start   end     forward_primer  reverse_primer
+</code>
+</li>
+</ul>
 
-        Print a help message and exit.
-
-    --version
-
-        Print the version number of rover and exit.
-
-    --primer_coords COORDS
-
-        Required.
-
-        A list of primers with their expected coordinates. TSV format with the
-        following data:
-
-            chromosome  start   end     forward_primer  reverse_primer
-
+<pre><code>
     --primer_sequences SEQ
 
         Required.
