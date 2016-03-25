@@ -307,20 +307,28 @@ optional arguments:
 <h3>
 <a id="explanation-of-command-line-options" class="anchor" href="#explanation-of-command-line-options" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Explanation of command line options</h3>
 
-<ul>
-<li>
-<code>-h</code> Print a help message and exit.</li>
-<li>
-<code>--version</code> Print the version number of rover and exit.</li>
-<li>
-<code>--primer_coords COORDS</code>
- Required.
- A list of primers with their expected coordinates. TSV format with the following data:
- <code>
- chromosome  start   end     forward_primer  reverse_primer
-</code>
-</li>
-</ul>
+<h4>
+<a id="-h" class="anchor" href="#-h" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>-h</code>
+</h4>
+
+<p>Print a help message and exit.</p>
+
+<h4>
+<a id="--version" class="anchor" href="#--version" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>--version</code>
+</h4>
+
+<p>Print the version number of rover and exit.</p>
+
+<h4>
+<a id="--primer_coords-coords" class="anchor" href="#--primer_coords-coords" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>--primer_coords COORDS</code>
+</h4>
+
+<p><strong>Required.</strong></p>
+
+<p>A list of primers with their expected coordinates. TSV format with the following data:</p>
+
+<pre><code>chromosome  start   end     forward_primer  reverse_primer
+</code></pre>
 
 <pre><code>
     --primer_sequences SEQ
