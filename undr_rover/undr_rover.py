@@ -10,7 +10,7 @@ from operator import itemgetter
 from pyfaidx import Fasta
 from version import undr_rover_version
 from collections import defaultdict
-from genotype_gtest import Haploid, Diploid 
+from genotype_gtest import Haploid, Diploid, DEFAULT_READ_ERROR
 import csv
 import datetime
 import gzip
@@ -105,6 +105,9 @@ def parse_args():
     parser.add_argument('--ploidy', type=int, choices=[1, 2],\
     	default=DEFAULT_PLOIDY, \
         help='Ploidy for genotyping 1 = haploid, 2 = diploid. Defaults to {}.'.format(DEFAULT_PLOIDY))
+    parser.add_argument('--error', type=float, \
+    	default=DEFAULT_READ_ERROR, \
+        help='Expected base read error rate. Defaults to {}.'.format(DEFAULT_READ_ERROR))
     return parser.parse_args()
 
 class Base(object):
@@ -528,9 +531,9 @@ def process_blocks(args, blocks, id_info, vcf_file):
                     for pileup_var in pileup:
                         pileup_bases += pileup_var.alt()
                     if args.ploidy == 1:
-                        genotyper = Haploid(pileup_bases.upper())
+                        genotyper = Haploid(pileup_bases.upper(), prob_read_error=args.error)
                     else: 
-                        genotyper = Diploid(pileup_bases.upper())
+                        genotyper = Diploid(pileup_bases.upper(), prob_read_error=args.error)
                     genotypes[position] = genotyper.snv() 
 
         for var in block_vars:

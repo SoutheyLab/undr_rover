@@ -75,6 +75,7 @@ usage: undr_rover [-h] [--version] --primer_coords PRIMER_COORDS
                   [--max_variants N] --reference FILE [--id_info FILE] --out
                   FILE [--log FILE] [--coverdir COVERDIR] [--fast]
                   [--snvthresh N] [--genotype] [--ploidy {1,2}]
+                  [--error ERROR]
                   fastqs [fastqs ...]
 
 Find variants from fastqs via a mapping-free approach.
@@ -125,5 +126,5 @@ optional arguments:
   --genotype            Compute genotypes for SNVs. Defaults to False.
   --ploidy {1,2}        Ploidy for genotyping 1 = haploid, 2 = diploid.
                         Defaults to 2.
+  --error ERROR         Expected base read error rate. Defaults to 0.002.
 ```
-
