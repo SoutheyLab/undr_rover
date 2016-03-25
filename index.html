@@ -162,6 +162,185 @@ chr7    152357819   .   T   C   .   PASS    Sample=example_R1.fastq;NV=76;NP=155
 <p>If you have FASTQ.gz files, they will need to be decompressed prior to using Undr Rover. </p>
 
 <p>The variants called will be written to the file variant_calls.vcf. This file will report called variants in accordance with the VCF v4.2 specification outlined <a href="http://samtools.github.io/hts-specs/VCFv4.2.pdf">here</a>. Coverage files containing the number of read-pairs which mapped to each region will be output in coverage_files/sample1.coverage and coverage_files/sample2.coverage. A log file describing the actions taken by the program will be stored in log_file.</p>
+
+<h3>
+<a id="command-line-arguments" class="anchor" href="#command-line-arguments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Command line arguments</h3>
+
+<pre><code>    -h
+
+        Print a help message and exit.
+
+    --version
+
+        Print the version number of rover and exit.
+
+    --primer_coords COORDS
+
+        Required.
+
+        A list of primers with their expected coordinates. TSV format with the
+        following data:
+
+            chromosome  start   end     forward_primer  reverse_primer
+
+    --primer_sequences SEQ
+
+        Required.
+
+        A list of primers with their expected base sequences. TSV format with
+        the following data:
+
+            primer_name sequence
+
+    --primer_prefix_size N
+
+        Optional. Defaults to 20. 
+
+        Determines the size of the prefix used for the dictionary which stores 
+        primers. Will most likely be set to a value equal to the minimum length 
+        of a primer. 
+
+    --kmer_length N
+
+        Optional. Defaults to 30.
+
+        Determines the length of k-mer to use in k-mer test. In this 
+        test, if a certain number of SNVs is found in k-mers from both reads
+        then the read pair is discarded.
+
+    --kmer_threshold N
+
+        Optional. Defaults to 2.
+
+        The number of SNVs considered acceptable in the k-mer region of a read.
+        If there are more than N SNVs in both k-mers of a read pair, then the 
+        read will be discarded. 
+
+    --primer_bases N
+
+        Optional. Defaults to 3.
+
+        When there are repeated bases or repeated sequences of bases near the 
+        start of a block, detecting variants becomes slightly harder as some 
+        variants won't be apparent. By default, Undr Rover will use 3 additional 
+        bases from the end of the primer region during variant calling. This will 
+        help to detect those variants. 
+
+        Increasing the value of this parameter will mean more bases from the end 
+        of the primer region are used, leading to slightly improved accuracy at 
+        the cost of slower run time.  
+
+    --proportionthresh N
+
+        Optional. Defaults to 0.05.
+
+        Only keep variants which appear in this proportion of the read-pairs for
+        a given target region, and bin otherwise. A variant must appear in
+        both reads of a pair to be counted. The proportion is calculated as
+        follows:
+
+            N = number of pairs containing this variant in both reads
+            T = number of read-pairs overlapping the target region
+
+            proportion = N/T
+
+        Note: variants must pass BOTH the proportionthresh and absthresh 
+        thresholds to be kept. If they fail either test then they are binned.
+
+        That is to say:
+
+            if N/T  &gt;= proportionthresh and N &gt;= absthresh:
+                keep the variant
+            else:
+                bin the variant
+
+    --absthresh N
+
+        Optional. Defaults to 2 read-pairs.
+
+        Only keep variants which appear in at least this many read-pairs
+        for a given target region.
+
+        See comments above about proportionthresh.
+
+    --qualthresh N
+
+        Optional. Minimum phred quality score for bases appearing in SNVs and
+        insertions. If this argument is set Rover will only consider SNVs and
+        insertions where all DNA bases in those variants have a quality score
+        greater than or equal to the argument. For example, setting this
+        argument to 35 will cause Rover to discard any SNVs or insertions
+        containing any bases with a score below 35. If the argument is not
+        set then Rover will not consider quality scores in its decision
+        to keep or discard a variant.
+
+    --overlap OVERLAP
+
+       Optional. Defaults to 0.9.
+
+       Minimum fraction overlap of read to block region.
+       0.5 means at least half of a block must be overlapped by a read
+       for the read to be considered for that region. 1.0 would mean the entire
+       block must be overlapped by the read.
+
+    --max_variants N
+
+        Optional. Defaults to 25. 
+
+        The maximum number of variants which can be observed for a single read
+        before it is considered meaningless and discarded for the purposes of
+        variant calling. 
+
+    --reference FILE
+
+        Required.
+
+        Reference sequences in FASTA format. Undr Rover extracts insert 
+        sequences for each block from the reference and compares this with the
+        read sequences to call variants.
+
+    --id_info FILE
+
+        Optional. Rover will find the rs numbers in DBSNP and show them in the 
+        output VCF file if it can find the relevant number in DBSNP, which is a 
+        vcf format file containing rs numbers for known variants in .vcf.gz 
+        format with an accompanying .tbi file (created by tabix).
+
+    --fast
+
+        Optional. Defaults to False.
+
+        If set, gapped alignment will only be used when SNVs are detected within 
+        snvthresh bases of each other. Leads to a significant decrease in the run 
+        time of Undr Rover. 
+
+    --snvthresh N
+
+        Optional. Defaults to 1.
+
+        If --fast is set, gapped alignment will be performed on reads
+        which contain SNVs within N bases of each other. The default setting
+        of 1 allows for the fastest run-time and should provide a sufficient 
+        level of accuracy in the majority of cases.
+
+    --coverdir COVERDIR
+
+        Optional. Defaults to current working directory.
+
+        Directory to write the coverage files. If the directory does not
+        exist Rover will not try to create it. You must create the directory
+        yourself.
+
+        The format of the coverage files is a TSV with:
+
+        chr     block_start     block_end       num_pairs
+
+    fastqs [fastqs ...]
+
+        One or more pairs of FASTQ files containing reads for which variant
+        calling will be attempted. FASTQ.gz files will need to decompressed
+        prior to use with Undr Rover.
+</code></pre>
       </section>
     </div>
 
