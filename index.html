@@ -538,7 +538,8 @@ prior to use with UNDR ROVER.</p>
 <p>If this command line argument is specified UNDR ROVER will compute the most likely genotype for every SNV reported in the output VCF file. The most likely genotype is computed from the pileup of bases which align to the same position as the SNV. By default the underlying ploidy of the sample is assumed to be diploid, but this can be overridden with the <code>--ploidy</code> command line argument. Currently UNDR ROVER only supports genotyping for diploid and haploid cells. When calling the genotype UNDR ROVER considers all possible genotypes and picks the one which minimises a statistical test called the <a href="https://en.wikipedia.org/wiki/G-test">G Test</a>. It also computes a probability of that genotype which indicates how confident it is in the call. Genotyping can add time to the computation, so it is not done by default. Currently UNDR ROVER does not do genotyping for INDELs.</p>
 
 <h4>
-<a id="--ploidy-12" class="anchor" href="#--ploidy-12" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>--ploidy {1,2}</h4>
+<a id="--ploidy-12" class="anchor" href="#--ploidy-12" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a><code>--ploidy {1,2}</code>
+</h4>
 
 <p><strong>Optional</strong>. Defaults to 2. Only relevant if <code>--genotype</code> is also given as command line argument.</p>
 
