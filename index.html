@@ -32,7 +32,69 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h2>
-<a id="a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" class="anchor" href="#a-simple-fast-method-of-calling-variants-directly-from-fastqs-without-mapping" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>A simple, fast method of calling variants directly from FASTQs without mapping</h2>
+<a id="undr-rover---a-fast-and-accurate-variant-caller-for-targeted-dna-sequencing" class="anchor" href="#undr-rover---a-fast-and-accurate-variant-caller-for-targeted-dna-sequencing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>UNDR ROVER - A fast and accurate variant caller for targeted DNA sequencing.</h2>
+
+<h3>
+<a id="authors" class="anchor" href="#authors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Authors:</h3>
+
+<ul>
+<li>Bernard J Pope (2,3)</li>
+<li>Tú Nguyen-Dumont (1)</li>
+<li>Daniel J Park (1)</li>
+<li>Roger Li (2)</li>
+<li>Edmund Lau (2)</li>
+<li>Peter Georgeson (2)</li>
+</ul>
+
+<ol>
+<li>Genetic Epidemiology Laboratory, Department of Pathology, The University of Melbourne.</li>
+<li>Victorian Life Sciences Computation Initiative (VLSCI).</li>
+<li>Department of Computing and Information Systems, The University of Melbourne.</li>
+</ol>
+
+<h3>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License:</h3>
+
+<p><a href="http://opensource.org/licenses/BSD-3-Clause">The BSD 3-Clause License</a></p>
+
+<h3>
+<a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Requirements</h3>
+
+<ul>
+<li>Python 2.7</li>
+<li><a href="https://pypi.python.org/pypi/PyVCF">PyVCF</a></li>
+<li><a href="https://pypi.python.org/pypi/pyfaidx">Pyfaidx</a></li>
+<li><a href="https://pypi.python.org/pypi/biopython">Biopython</a></li>
+<li><a href="http://www.scipy.org/">SciPy</a></li>
+<li>A reference human genome sequence in a single FASTA file</li>
+<li>A file describing the amplicon target coordinates</li>
+<li>A file describing the PCR primers used for the specified coordinates</li>
+</ul>
+
+<h3>
+<a id="description" class="anchor" href="#description" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Description</h3>
+
+<p>UNDR ROVER enables the user to call variants from decompressed FASTQ files
+directly without having to go through a mapping step.</p>
+
+<p>Reads are organised into blocks, which are initialised from information about
+known primer sequences. For each block, we record the primer's DNA sequence,
+coordinates and reference insert sequence. Once the reads have been assigned
+to blocks (by matching the bases in their primer region to a known primer),
+we call variants for each block one at a time.</p>
+
+<p>The approach UNDR ROVER takes when processing reads to call variants is to
+initially assume that all reads contain only single nucleotide variants. If
+we detect two single nucleotide variants in a row during this variant calling,
+UNDR ROVER immediatly ceases this step and instead does a full gapped alignment
+of the read against the reference insert sequence to detect possible insertions
+and deletions.</p>
+
+<p>Only variants detected in both reads of a read-pair are considered relevant.
+User-defined thresholds determine the minimum number and proportion of
+read-pairs a variant must be observed to be considered a 'PASS'. Coverage is
+also reported for each block to allow for regions which require additional
+screening to be easily identified.</p>
 
 <h3>
 <a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
