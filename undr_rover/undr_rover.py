@@ -369,14 +369,17 @@ def initialise_blocks(args):
     for primer in primer_info:
         # Initiates a dictionary containing containing primer sequences.
         primer_sequences[primer[0]] = primer[1]
+        # Set primer_prefix_size as the shortest primer sequence Length
+        if(args.primer_prefix_size > len(primer[1])):
+            args.primer_prefix_size = len(primer[1])
     for block in block_coords:
         # Get the insert sequence. Take some extra bases to help with the
         # variant calling near the edges of the block.
         ref_sequence = reference[block[0]][int(block[1]) - 1 - \
         args.primer_bases:int(block[2]) + args.primer_bases]
-        # Actual block, for which the key is a certain number of bases of the 
-        # forward primer, depending on an input parameter to the program. Value 
-        # contains [chr, start, end, {reads}, insert_seq, forward primer name, 
+        # Actual block, for which the key is a certain number of bases of the
+        # forward primer, depending on an input parameter to the program. Value
+        # contains [chr, start, end, {reads}, insert_seq, forward primer name,
         # reverse primer name, forward primer sequence, reverse primer sequence]
         blocks[primer_sequences[block[3]][:args.primer_prefix_size]] = \
         [block[0], block[1], block[2], {}, str(ref_sequence), block[3], \
@@ -432,7 +435,7 @@ def complete_blocks(args, blocks, fastq_pair):
                             blocks[forward_key][3][read['name']][3] = len(rseq)
     # For the next stage, we only need the actual blocks.
     result = [b[:5] for b in blocks.values() if len(b) > 2]
-    return result 
+    return result
 
 def process_blocks(args, blocks, id_info, vcf_file):
     """ Variant calling stage. Process blocks one at a time and call variants
@@ -527,14 +530,14 @@ def process_blocks(args, blocks, id_info, vcf_file):
                     # were the same as the reference. It will be inaccurate if
                     # the other reads contain INDELs
                     num_ref_bases = num_pairs - len(pileup)
-                    pileup_bases = ref_base * num_ref_bases 
+                    pileup_bases = ref_base * num_ref_bases
                     for pileup_var in pileup:
                         pileup_bases += pileup_var.alt()
                     if args.ploidy == 1:
                         genotyper = Haploid(pileup_bases.upper(), prob_read_error=args.error)
-                    else: 
+                    else:
                         genotyper = Diploid(pileup_bases.upper(), prob_read_error=args.error)
-                    genotypes[position] = genotyper.snv() 
+                    genotypes[position] = genotyper.snv()
 
         for var in block_vars:
             num_vars = block_vars[var]
