@@ -90,6 +90,8 @@ def parse_args():
     parser.add_argument('--coverdir', \
         help='Directory to write coverage files, defaults to current working \
         directory.')
+    parser.add_argument('--coverfile', \
+            help='Name of coverage file containing the coverage data.')
     parser.add_argument('--fast', action='store_true', \
     	default=DEFAULT_FAST_SETTING, \
         help='Use gapped alignment less often, leading to faster run time.')
@@ -553,12 +555,9 @@ def process_blocks(args, blocks, id_info, vcf_file):
 
         coverage_info.append((chrsm, start, end, num_pairs))
 
-    if sample is not None:
-        coverage_filename = sample + '.coverage'
-        if args.coverdir is not None:
-            coverage_filename = os.path.join(args.coverdir, coverage_filename)
-        with open(coverage_filename, 'w') as coverage_file:
-            write_coverage_data(coverage_file, coverage_info)
+    coverage_filename = args.coverfile
+    with open(coverage_filename, 'w') as coverage_file:
+        write_coverage_data(coverage_file, coverage_info)
 
 def format_genotype(variant, genotypes, ploidy):
     result = []
