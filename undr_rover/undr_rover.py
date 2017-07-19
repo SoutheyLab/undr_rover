@@ -558,7 +558,7 @@ def process_blocks(args, blocks, id_info, vcf_file):
             var.gt.extend(''.join([str('{:.2}'.format(proportion))]))
             print ''.join(var.format) + "\t" + ''.join(var.gt)
 
-            write_variant(vcf_file, var, id_info, args, genotypes)
+            write_variant(vcf_file, var, id_info, args, genotypes, var.format, var.gt)
 
         coverage_info.append((chrsm, start, end, num_pairs))
 
@@ -589,7 +589,7 @@ def format_genotype(variant, genotypes, ploidy):
     return result
 
 
-def write_variant(vcf_file, variant, id_info, args, genotypes):
+def write_variant(vcf_file, variant, id_info, args, genotypes, filter_val, gt):
     """ Writes variant to vcf_file, while also finding the relevant rs number
     from dbsnp if applicable."""
     # If the variant is deemed a "PASS", find the relevant rs number from dbsnp.
@@ -605,7 +605,7 @@ def write_variant(vcf_file, variant, id_info, args, genotypes):
 
     vcf_file.write('\t'.join([variant.chrsm, str(variant.position()), \
 ref, variant.ref(), variant.alt(), str(variant.qual), variant.fil(), \
-';'.join(variant.info), ';'.join(variant.filter), ';'.join(variant.gt)]) + '\n')
+';'.join(variant.info), filter_val, gt]) + '\n')
 
 def write_coverage_data(coverage_file, coverage_info):
     """ Write coverage information to the coverage files."""
