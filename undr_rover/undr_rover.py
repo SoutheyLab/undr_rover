@@ -660,7 +660,7 @@ def main():
     with open(args.out, 'w') as vcf_file:
         vcf_reader = vcf.Reader(filename=args.id_info) if args.id_info else None
         write_metadata(args, vcf_file)
-        sample = vcf_file
+        sample = os.path.split(os.path.abspath(args.out))[1].split('.')[0]
         vcf_file.write(OUTPUT_HEADER + '\t' + sample + '\n')
         blocks = initialise_blocks(args)
         for fastq_pair in zip(*[iter(args.fastqs)]*2):
