@@ -548,11 +548,12 @@ def process_blocks(args, blocks, id_info, vcf_file):
             proportion = float(num_vars) / num_pairs
             var.info.extend([''.join(["Sample=", sample]), ''.join(["NV=", \
                 str(num_vars)]), ''.join(["NP=", str(num_pairs)]), \
-            ''.join(["PCTT=", str('{:.2%}'.format(proportion))])])
+            ''.join(["PCT=", str('{:.2%}'.format(proportion))])])
             if num_vars < args.absthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";at"])
             if proportion < args.proportionthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";pt"])
+
             var.format.extend(''.join(["PCT=", str('{:.2%}'.format(proportion))]))
             var.gt.extend(''.join([str('{:.2}'.format(proportion))]))
             print ''.join(var.format) + "\t" + ''.join(var.gt)
@@ -604,7 +605,7 @@ def write_variant(vcf_file, variant, id_info, args, genotypes):
 
     vcf_file.write('\t'.join([variant.chrsm, str(variant.position()), \
 ref, variant.ref(), variant.alt(), str(variant.qual), variant.fil(), \
-';'.join(variant.info)]) + '\n')
+';'.join(variant.info), ';'.join(variant.filter), ';'.join(variant.gt)]) + '\n')
 
 def write_coverage_data(coverage_file, coverage_info):
     """ Write coverage information to the coverage files."""
