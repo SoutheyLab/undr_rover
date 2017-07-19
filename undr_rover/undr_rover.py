@@ -638,10 +638,12 @@ quality score below {}\">\n".format(args.qualthresh))
     vcf_file.write("##FILTER=<ID=at,Description=\"Variant does not appear in \
 at least {} read pairs\">\n".format(args.absthresh))
     vcf_file.write("##FILTER=<ID=pt,Description=\"Variant does not appear in \
-at least {}% of read pairs for the given region\">\n" \
-    vcf_file.write("##FORMAT=<ID=PCT,Number=1,Type=Float,Description=\"Percentage \
-of read pairs at POS with variant\">\n")\
+at least {}% of read pairs for the given region\">\n"\
 .format(args.proportionthresh * 100))
+    vcf_file.write("##FORMAT=<ID=PCT,Number=1,Type=Float,Description=\
+\"Percentage of read pairs at POS with variant\">\n")
+
+
 
 def main():
     """ Main function."""
