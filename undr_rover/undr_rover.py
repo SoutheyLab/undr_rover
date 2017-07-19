@@ -32,7 +32,7 @@ DEFAULT_FAST_SETTING = False
 DEFAULT_GENOTYPE_SETTING = False
 DEFAULT_PLOIDY = 2
 OUTPUT_HEADER = '\t'.join(["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", \
-    "FILTER", "INFO"])
+    "FILTER", "INFO", "FILTER"])
 
 def parse_args():
     """ Find variants from fastqs via a mapping-free approach."""
@@ -137,6 +137,8 @@ class Variant(object):
         self.qual = qual
         self.filter_reason = None
         self.info = []
+        self.format = []
+        self.gt = []
     def __eq__(self, other):
         return self.as_tuple() == other.as_tuple()
     def __hash__(self):
@@ -551,6 +553,9 @@ def process_blocks(args, blocks, id_info, vcf_file):
                 var.filter_reason = ''.join([nts(var.filter_reason), ";at"])
             if proportion < args.proportionthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";pt"])
+            var.format.extend(''.join(["PCT=", str('{:.2%}'.format(proportion))]))
+            var.gt.extend(''.join([str('{:.2%}'.format(proportion))]))
+
             write_variant(vcf_file, var, id_info, args, genotypes)
 
         coverage_info.append((chrsm, start, end, num_pairs))
@@ -633,7 +638,9 @@ quality score below {}\">\n".format(args.qualthresh))
     vcf_file.write("##FILTER=<ID=at,Description=\"Variant does not appear in \
 at least {} read pairs\">\n".format(args.absthresh))
     vcf_file.write("##FILTER=<ID=pt,Description=\"Variant does not appear in \
-at least {}% of read pairs for the given region\">\n"\
+at least {}% of read pairs for the given region\">\n" \
+    vcf_file.write("##FORMAT=<ID=PCT,Number=1,Type=Float,Description=\
+\"Percentage of read pairs at POS with variant\">\n")\
 .format(args.proportionthresh * 100))
 
 def main():
@@ -651,7 +658,8 @@ def main():
     with open(args.out, 'w') as vcf_file:
         vcf_reader = vcf.Reader(filename=args.id_info) if args.id_info else None
         write_metadata(args, vcf_file)
-        vcf_file.write(OUTPUT_HEADER + '\n')
+        sample = vcf_file
+        vcf_file.write(OUTPUT_HEADER + '\t' + sample + '\n')
         blocks = initialise_blocks(args)
         for fastq_pair in zip(*[iter(args.fastqs)]*2):
             final_blocks = complete_blocks(args, blocks, fastq_pair)
