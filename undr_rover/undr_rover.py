@@ -548,12 +548,12 @@ def process_blocks(args, blocks, id_info, vcf_file):
             proportion = float(num_vars) / num_pairs
             var.info.extend([''.join(["Sample=", sample]), ''.join(["NV=", \
                 str(num_vars)]), ''.join(["NP=", str(num_pairs)]), \
-            ''.join(["PCT=", str('{:.2%}'.format(proportion))])])
+            ''.join(["PCTT=", str('{:.2%}'.format(proportion))])])
             if num_vars < args.absthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";at"])
             if proportion < args.proportionthresh:
                 var.filter_reason = ''.join([nts(var.filter_reason), ";pt"])
-            var.format.extend(''.join(["PCTT=", str('{:.2%}'.format(proportion))]))
+            var.format.extend(''.join(["PCT=", str('{:.2%}'.format(proportion))]))
             var.gt.extend(''.join([str('{:.2}'.format(proportion))]))
             print ''.join(var.format) + "\t" + ''.join(var.gt)
 
