@@ -32,7 +32,7 @@ DEFAULT_FAST_SETTING = False
 DEFAULT_GENOTYPE_SETTING = False
 DEFAULT_PLOIDY = 2
 OUTPUT_HEADER = '\t'.join(["#CHROM", "POS", "ID", "REF", "ALT", "QUAL", \
-    "FILTER", "INFO", "FILTER"])
+    "FILTER", "INFO", "FILTER", "FORMAT"])
 
 def parse_args():
     """ Find variants from fastqs via a mapping-free approach."""
