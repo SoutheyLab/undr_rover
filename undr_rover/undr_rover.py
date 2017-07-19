@@ -556,6 +556,8 @@ def process_blocks(args, blocks, id_info, vcf_file):
             var.format.extend(''.join(["PCT=", str('{:.2%}'.format(proportion))]))
             var.gt.extend(''.join([str('{:.2%}'.format(proportion))]))
 
+            print var
+
             write_variant(vcf_file, var, id_info, args, genotypes)
 
         coverage_info.append((chrsm, start, end, num_pairs))
