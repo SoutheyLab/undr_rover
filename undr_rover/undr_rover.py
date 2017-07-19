@@ -555,7 +555,7 @@ def process_blocks(args, blocks, id_info, vcf_file):
                 var.filter_reason = ''.join([nts(var.filter_reason), ";pt"])
             var.format.extend(''.join(["PCT=", str('{:.2%}'.format(proportion))]))
             var.gt.extend(''.join(["", str('{:.2%}'.format(proportion))]))
-            print var.format + "\t" + var.gt
+            print str(var.format) + "\t" + str(var.gt)
 
             write_variant(vcf_file, var, id_info, args, genotypes)
 
