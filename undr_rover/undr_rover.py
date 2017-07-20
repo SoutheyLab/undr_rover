@@ -641,8 +641,35 @@ at least {} read pairs\">\n".format(args.absthresh))
     vcf_file.write("##FILTER=<ID=pt,Description=\"Variant does not appear in \
 at least {}% of read pairs for the given region\">\n"\
 .format(args.proportionthresh * 100))
+        vcf_file.write("##contig=<ID=1,length=249250621>\n")
+    vcf_file.write("##contig=<ID=2,length=243199373>\n")
+    vcf_file.write("##contig=<ID=3,length=198022430>\n")
+    vcf_file.write("##contig=<ID=4,length=191154276>\n")
+    vcf_file.write("##contig=<ID=5,length=180915260>\n")
+    vcf_file.write("##contig=<ID=6,length=171115067>\n")
+    vcf_file.write("##contig=<ID=7,length=159138663>\n")
+    vcf_file.write("##contig=<ID=8,length=146364022>\n")
+    vcf_file.write("##contig=<ID=9,length=141213431>\n")
+    vcf_file.write("##contig=<ID=10,length=135534747>\n")
+    vcf_file.write("##contig=<ID=11,length=135006516>\n")
+    vcf_file.write("##contig=<ID=12,length=133851895>\n")
+    vcf_file.write("##contig=<ID=13,length=115169878>\n")
+    vcf_file.write("##contig=<ID=14,length=107349540>\n")
+    vcf_file.write("##contig=<ID=15,length=102531392>\n")
+    vcf_file.write("##contig=<ID=16,length=90354753>\n")
+    vcf_file.write("##contig=<ID=17,length=81195210>\n")
+    vcf_file.write("##contig=<ID=18,length=78077248>\n")
+    vcf_file.write("##contig=<ID=19,length=59128983>\n")
+    vcf_file.write("##contig=<ID=20,length=63025520>\n")
+    vcf_file.write("##contig=<ID=21,length=48129895>\n")
+    vcf_file.write("##contig=<ID=22,length=51304566>\n")
+    vcf_file.write("##contig=<ID=X,length=155270560>\n")
+    vcf_file.write("##contig=<ID=Y,length=59373566>\n")
+    vcf_file.write("##contig=<ID=MT,length=16569>\n")
     vcf_file.write("##FORMAT=<ID=PCT,Number=1,Type=Float,Description=\
 \"Percentage of read pairs at POS with variant\">\n")
+
+
 
 
 
