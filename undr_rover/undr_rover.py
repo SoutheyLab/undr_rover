@@ -641,7 +641,7 @@ at least {} read pairs\">\n".format(args.absthresh))
     vcf_file.write("##FILTER=<ID=pt,Description=\"Variant does not appear in \
 at least {}% of read pairs for the given region\">\n"\
 .format(args.proportionthresh * 100))
-        vcf_file.write("##contig=<ID=1,length=249250621>\n")
+    vcf_file.write("##contig=<ID=1,length=249250621>\n")
     vcf_file.write("##contig=<ID=2,length=243199373>\n")
     vcf_file.write("##contig=<ID=3,length=198022430>\n")
     vcf_file.write("##contig=<ID=4,length=191154276>\n")
@@ -668,10 +668,6 @@ at least {}% of read pairs for the given region\">\n"\
     vcf_file.write("##contig=<ID=MT,length=16569>\n")
     vcf_file.write("##FORMAT=<ID=PCT,Number=1,Type=Float,Description=\
 \"Percentage of read pairs at POS with variant\">\n")
-
-
-
-
 
 def main():
     """ Main function."""
