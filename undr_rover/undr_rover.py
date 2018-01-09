@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """ Unmapped primer directed read overlap variant caller. """
-
+import gzip
 from argparse import ArgumentParser
 from Bio import pairwise2
 from Bio.SeqIO.QualityIO import FastqGeneralIterator
@@ -406,7 +406,7 @@ def complete_blocks(args, blocks, fastq_pair):
         exit('Cannot deduce sample name from fastq filename {}'.\
             format(fastq_pair[0]))
     for fastq_file in fastq_pair:
-        with open(fastq_file, "rU") as fastq:
+        with gzip.open(fastq_file, "rU") as fastq:
             for (title, seq, qual) in FastqGeneralIterator(fastq):
                 # Each read is also stored as a dictionary.
                 read = {'name': title.partition(' ')[0], 'seq': seq}
