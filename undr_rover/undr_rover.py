@@ -721,7 +721,7 @@ at least {}% of read pairs for the given region\">\n"\
     vcf_file.write("##contig=<ID=GL000192.1,length=547496,assembly=b37>\n")
     vcf_file.write("##contig=<ID=NC_007605,length=171823,assembly=b37>\n")
     vcf_file.write("##contig=<ID=hs37d5,length=35477943,assembly=b37>\n")
-    vcf_file.write("##reference=file:///projects/vh83/reference/genomes/b37/bwa_0.7.12_index/human_g1k_v37_decoy.fasta")
+    vcf_file.write("##reference=file:///projects/vh83/reference/genomes/b37/bwa_0.7.12_index/human_g1k_v37_decoy.fasta\n")
 
 
 def main():
