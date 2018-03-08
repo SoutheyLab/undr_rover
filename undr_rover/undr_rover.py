@@ -400,7 +400,7 @@ def complete_blocks(args, blocks, fastq_pair):
             blocks[block][3].clear()
     sample = os.path.basename(fastq_pair[0]).split('_')
     if len(sample) > 1:
-        sample = '_'.join(sample[:3])
+        sample = '_'.join(sample[:4])
         logging.info("Processing sample {}".format(sample))
     else:
         exit('Cannot deduce sample name from fastq filename {}'.\
